@@ -18,15 +18,23 @@ class Murmullos:
         self.label = clutter.Text()
         self.label.set_text(message)
         self.label.set_color(color)
+        self.label.set_font_name('Sans 32')
         (label_width,label_height) = self.label.get_size()
         label_x = self.stage.get_width() - label_width - 50
         label_y = self.stage.get_height() - label_height
         self.label.set_position(label_x, label_y)
         self.stage.add(self.label)
 
+        self.timeline = clutter.Timeline(4000)
+        self.timeline.set_loop(True)
+        alpha = clutter.Alpha(self.timeline,clutter.LINEAR)
+        self.behaviour = clutter.BehaviourOpacity(0xdd,0,alpha)
+        self.behaviour.apply(self.label)
+
 
     def run (self):
         self.stage.show_all()
+        self.timeline.start()
         clutter.main()
 
 
