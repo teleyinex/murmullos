@@ -3,6 +3,8 @@
 
 import sys
 import clutter
+import urllib
+import identica
 
 class Murmullos:
     def __init__(self,message):
@@ -14,14 +16,25 @@ class Murmullos:
         self.stage.set_fullscreen(True)
 
         color = clutter.Color(0xff,0xff,0xff,0xff)
+        
+        self.identica = identica.Identica("ciencia")
+        self.identica.update()
+        message = self.identica.data['results'][0]['text']
+
+        urllib.urlretrieve(self.identica.data['results'][0]['profile_image_url'],"avatar")
+
+        self.texture = clutter.Texture("avatar")
+        self.texture.set_position(300,300)
+        self.stage.add(self.texture)
 
         self.label = clutter.Text()
+        self.label.set_size(600,900)
         self.label.set_text(message)
         self.label.set_color(color)
-        self.label.set_font_name('Sans 32')
-        (label_width,label_height) = self.label.get_size()
-        label_x = self.stage.get_width() - label_width - 50
-        label_y = self.stage.get_height() - label_height
+        self.label.set_font_name('Sans 16')
+        self.label.set_line_wrap(True)
+        label_x = self.stage.get_width()/2 
+        label_y = self.stage.get_height()/2 
         self.label.set_position(label_x, label_y)
         self.stage.add(self.label)
 
