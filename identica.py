@@ -4,9 +4,9 @@
 import urllib, simplejson
 
 class Identica:
-    def __init__(self, query = None):
-        if (query != None):
-            self.url = "http://identi.ca/api/search.json?q=" + query
+    def __init__(self, tag = None):
+        if (tag != None):
+            self.url = "http://identi.ca/api/search.json?q=" + tag
         else:
             self.url = "http://identi.ca/api/statuses/public_timeline.json"
 
