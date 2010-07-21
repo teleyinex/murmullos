@@ -22,13 +22,16 @@ class Murmullos:
 
         # Code for the bacground rectangle
         self.rectangle = clutter.Rectangle()
-        self.rectangle.set_border_width(2)
+        self.rectangle.set_border_width(3)
         self.rectangle.set_color(clutter.Color(0x00,0x00,0x00,0x00))
         self.rectangle.set_border_color(clutter.Color(0xff,0xff,0xff,0xff))
         self.rectangle.hide()
 
         # Code for the avatar:
-        self.texture = clutter.Texture()
+        self.avatar = clutter.Texture()
+
+        # Code for the nipple
+        self.nipple = clutter.Texture()
 
         # Code for the text:
         self.label = clutter.Text()
@@ -38,7 +41,7 @@ class Murmullos:
 
         # Grouping everything:
         self.group = clutter.Group()
-        self.group.add(self.texture,self.label,self.rectangle)
+        self.group.add(self.avatar,self.label,self.nipple,self.rectangle)
         self.stage.add(self.group)
 
         # Creating the timeline:
@@ -63,10 +66,10 @@ class Murmullos:
         sx = (x/2)-(self.rectangle.get_width()/2)
         sy = (y/2)-(self.rectangle.get_height()/2)
 
-
-        self.texture.set_position(sx+10,sy+10)
-        self.label.set_position(sx+80,sy+10)
-        self.rectangle.set_position(sx,sy)
+        self.avatar.set_position(sx,sy)
+        self.rectangle.set_position(sx+48+5+23,sy-5)
+        self.nipple.set_position(sx+48+5,sy)
+        self.label.set_position(sx+48+5+27+5,sy)
 
        
     def IdenticaUpdate(self):
@@ -74,7 +77,10 @@ class Murmullos:
 
     def post(self,avatar,message):
         # Avatar
-        self.texture.set_from_file(avatar)
+        self.avatar.set_from_file(avatar)
+        
+        # Nipple
+        self.nipple.set_from_file("img/nipple.png")
 
         # Message
         self.label.set_text(message)
