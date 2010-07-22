@@ -14,6 +14,7 @@ class Murmullos:
         self.stage.set_title("Murmullos")
         self.stage.connect('key-press-event',clutter.main_quit)
         self.stage.connect('fullscreen',self.reposition,self)
+        self.stage.hide_cursor()
         self.stage.set_fullscreen(True)
 
         self.color = clutter.Color(0xff,0xff,0xff,0xff)
