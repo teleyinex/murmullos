@@ -1,5 +1,21 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*-
+# Copyright 2010 Daniel Lombraña González <teleyinex AT gmail DOT com>
+# 
+# This file is part of Murmullos.
+# 
+# Murmullos is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# Murmullos is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Murmullos.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 import clutter
@@ -177,14 +193,10 @@ class Murmullos:
 
         self.bubble.add(self.corner_top_left,self.bar_top,self.corner_top_right,self.bar_left,self.bar_right,self.corner_bottom_left,self.bar_bottom,self.corner_bottom_right)
 
-        #self.bubble.set_position(300,300)
-
     def run (self):
         self.stage.show_all()
         self.IdenticaUpdate()
         self.timeline.start()
-
-
 
         clutter.main()
 

@@ -1,0 +1,20 @@
+Murmullos
+===
+See COPYRIGHT for the list of authors.
+
+Installation 
+============
+
+The installation is pretty simple. If you have downloaded a ZIP file, uncompress it and you are ready to run it, else access
+the folder murmullos after cloning the repository. Just access the folder murmullos, and run the command ./murmullos.py. By 
+default murmullos checks in Identi.ca for the word "gnu", if you want other, type:
+
+./murmullos.py keyword
+
+
+That's all. I hope you enjoy the software.
+
+Contact information
+===================
+
+Just send me an e-mail to <teleyinex AT gmail DOT com>.
