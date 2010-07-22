@@ -20,20 +20,8 @@ class Murmullos:
 
         self.identica = identica.Identica(tag)
 
-        # Code for the bacground rectangle
-        self.rectangle = clutter.Rectangle()
-        self.rectangle.set_border_width(3)
-        self.rectangle.set_color(clutter.Color(0x00,0x00,0x00,0x00))
-        self.rectangle.set_border_color(clutter.Color(0xff,0xff,0xff,0xff))
-        self.rectangle.hide()
-
-        
-
         # Code for the avatar:
         self.avatar = clutter.Texture()
-
-        # Code for the nipple
-        self.nipple = clutter.Texture()
 
         # Code for the text:
         self.label = clutter.Text()
@@ -43,7 +31,7 @@ class Murmullos:
 
         # Grouping everything:
         self.group = clutter.Group()
-        self.group.add(self.avatar,self.label,self.nipple,self.rectangle)
+        self.group.add(self.avatar,self.label)
         self.stage.add(self.group)
 
         # Creating the timeline:
@@ -61,21 +49,26 @@ class Murmullos:
         # Size for the group: Rectangle, Texture and Label
         width = x - (x*40)/100
         height = y - (y*80)/100
-        self.rectangle.set_size(width, height)
-        self.label.set_size(width-50, height-50)
-
-        # Position for the group: Rectangle, Texture and Label
-        sx = (x/2)-(self.rectangle.get_width()/2)
-        sy = (y/2)-(self.rectangle.get_height()/2)
-
-        self.avatar.set_position(sx,sy)
-        self.rectangle.set_position(sx+48+5+23,sy-5)
-        self.nipple.set_position(sx+48+5,sy)
-        self.label.set_position(sx+48+5+27+5,sy)
 
         # Create the bubble
-        self.new_bubble(400, 200)
+        width = round(width,-2)
+        height = round(height,-2)
+        if (height <= 100): height = 200
+        self.new_bubble(width , height)
+        self.bubble.hide()
+        self.group.add(self.bubble)
 
+        self.label.set_size(width-50, height-50)
+
+        # Position for the group: Bubble, Texture and Label
+        sx = (x/2)-(self.bubble.get_width()/2)
+        sy = (y/2)-(self.bubble.get_height()/2)
+
+        self.bubble.set_position(sx,sy)
+        self.avatar.set_position(sx-48,sy+75)
+        self.label.set_position(sx+60,sy+30)
+
+        
        
     def IdenticaUpdate(self):
         self.identica.update()
@@ -84,14 +77,11 @@ class Murmullos:
         # Avatar
         self.avatar.set_from_file(avatar)
         
-        # Nipple
-        self.nipple.set_from_file("img/nipple.png")
-
         # Message
         self.label.set_text(message)
 
     def on_timeline_completed(timeline, frame_num, self):
-        self.rectangle.show()
+        self.bubble.show()
         item = self.identica.data['results'].pop()
         urllib.urlretrieve(item['profile_image_url'],"avatar")
         self.post("avatar",item['text'])
@@ -109,6 +99,7 @@ class Murmullos:
         self.border_bottom = clutter.Texture()
         self.border_left = clutter.Texture()
         self.border_right = clutter.Texture()
+        self.nipple2 = clutter.Texture()
 
         # Now we load the textures for each item
         self.corner_top_left.set_from_file("img/bubble/corner_top_left.png")
@@ -119,6 +110,7 @@ class Murmullos:
         self.border_bottom.set_from_file("img/bubble/border_bottom.png")
         self.border_left.set_from_file("img/bubble/border_left.png")
         self.border_right.set_from_file("img/bubble/border_right.png")
+        self.nipple2.set_from_file("img/bubble/nipple.png")
 
         # First, we create the top bar 
         tile_width = self.border_top.get_width()
@@ -148,7 +140,10 @@ class Murmullos:
         tile_height = self.border_left.get_height()
         self.border_left.set_position(0,0)
         border_left_tiles = [self.border_left]
-        for i in range(1,int(height/tile_height)):
+        # We have to add also the nipple
+        self.nipple2.set_position(-36,49)
+        border_left_tiles.append(self.nipple2)
+        for i in range(2,int(height/tile_height)):
             border_left_tiles.append(clutter.Clone(self.border_left))
             border_left_tiles[i].set_position(0,tile_height*i)
 
@@ -170,21 +165,18 @@ class Murmullos:
 
         # Now we create the whole bubble
         self.bubble = clutter.Group()
-        self.corner_top_left.set_position(0,0)
-        self.bar_top.set_position(self.corner_top_left.get_width(),0)
+        self.corner_top_left.set_position(40,0)
+        self.bar_top.set_position(self.corner_top_left.get_x()+self.corner_top_left.get_width(),0)
         self.corner_top_right.set_position(self.bar_top.get_width()+self.bar_top.get_x(),0)
-        self.bar_left.set_position(0,self.corner_top_left.get_height())
-        self.bar_right.set_position(self.corner_top_right.get_width(),self.corner_top_right.get_height())
-        self.corner_bottom_left.set_position(0,self.bar_left.get_height()+self.corner_bottom_left.get_height())
-        self.bar_bottom.set_position(self.corner_bottom_left.get_width(),self.corner_bottom_left.get_height())
-        self.corner_bottom_right.set_position(self.bar_bottom.get_width()+self.corner_bottom_right.get_width(),self.bar_right.get_height()+self.corner_bottom_right.get_height())
+        self.bar_left.set_position(40,self.corner_top_left.get_height())
+        self.bar_right.set_position(self.corner_top_right.get_width()+self.corner_top_left.get_x(),self.corner_top_right.get_height())
+        self.corner_bottom_left.set_position(40,self.bar_left.get_height()+self.corner_bottom_left.get_height())
+        self.bar_bottom.set_position(self.corner_top_left.get_x()+self.corner_bottom_left.get_width(),self.corner_bottom_left.get_height()-4)
+        self.corner_bottom_right.set_position(self.bar_bottom.get_width()+self.bar_bottom.get_x(),self.bar_right.get_height()+self.corner_bottom_right.get_height())
 
         self.bubble.add(self.corner_top_left,self.bar_top,self.corner_top_right,self.bar_left,self.bar_right,self.corner_bottom_left,self.bar_bottom,self.corner_bottom_right)
-        self.stage.add(self.bubble)
 
-
-
-
+        #self.bubble.set_position(300,300)
 
     def run (self):
         self.stage.show_all()
