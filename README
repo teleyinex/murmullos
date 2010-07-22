@@ -2,6 +2,11 @@ Murmullos
 ===
 See COPYRIGHT for the list of authors.
 
+Requirements
+============
+
+It only needs Python 2.6 and Python-clutter.
+
 Installation 
 ============
 
