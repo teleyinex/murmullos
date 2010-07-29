@@ -29,6 +29,7 @@ class Murmullos:
         self.stage.set_size(800,600)
         self.stage.set_title("Murmullos")
         self.stage.connect('key-press-event',clutter.main_quit)
+        self.stage.connect('destroy',clutter.main_quit)
         self.stage.connect('fullscreen',self.reposition,self)
         self.stage.hide_cursor()
         self.stage.set_fullscreen(True)
@@ -59,8 +60,16 @@ class Murmullos:
         self.behaviour = clutter.BehaviourOpacity(0xdd,0,alpha)
         self.behaviour.apply(self.group)
 
+        # Create the bubble if we are not in full screen mode
+        if not self.stage.get_fullscreen():
+            self.set_scene()
+
+
     def reposition(stage, frame_num, self):
-        # Obtain the size of the fullscreen stage
+        self.set_scene()
+
+    def set_scene(self):
+        # Obtain the size of the stage
         (x,y) = self.stage.get_size()
 
         # Size for the group: Rectangle, Texture and Label
