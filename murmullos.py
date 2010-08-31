@@ -23,7 +23,7 @@ import urllib
 import identica
 
 class Murmullos:
-    def __init__(self,tag):
+    def __init__(self,service,tag):
         self.stage = clutter.Stage()
         self.stage.set_color(clutter.color_from_string('Black'))
         self.stage.set_size(800,600)
@@ -36,7 +36,7 @@ class Murmullos:
 
         self.color = clutter.Color(0xff,0xff,0xff,0xff)
 
-        self.identica = identica.Identica(tag)
+        self.identica = identica.Identica(service,tag)
 
         # Code for the avatar:
         self.avatar = clutter.Texture()
@@ -212,10 +212,11 @@ class Murmullos:
 def main (args):
     if args:
         tag = args[0]
+        service = args[1]
     else:
         tag = "gnu"
     
-    app = Murmullos(tag)
+    app = Murmullos(service,tag)
     app.run()
 
 if __name__ == '__main__':

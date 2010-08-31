@@ -21,11 +21,19 @@
 import urllib, simplejson
 
 class Identica:
-    def __init__(self, tag = None):
-        if (tag != None):
-            self.url = "http://identi.ca/api/search.json?q=" + tag
+    def __init__(self, service="identica", tag = None):
+        # Service parameter choses Identica (by default) or Twitter
+        if (service == "identica"):
+            if (tag != None):
+                self.url = "http://identi.ca/api/search.json?q=" + tag
+            else:
+                self.url = "http://identi.ca/api/statuses/public_timeline.json"
         else:
-            self.url = "http://identi.ca/api/statuses/public_timeline.json"
+            if (tag != None):
+                self.url = "http://search.twitter.com/search.json?q=" + tag
+            else:
+                self.url = "http://search.twitter.com/search.json?q=" + tag
+
 
     def update(self):
         self.data = simplejson.load(urllib.urlopen(self.url))
