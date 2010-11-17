@@ -25,12 +25,12 @@ class Identica:
         # Service parameter choses Identica (by default) or Twitter
         if (service == "identica"):
             if (tag != None):
-                self.url = "http://identi.ca/api/search.json?q=" + tag
+                self.url = "http://identi.ca/api/search.json?q=" + tag + "&rpp=25"
             else:
                 self.url = "http://identi.ca/api/statuses/public_timeline.json"
         else:
             if (tag != None):
-                self.url = "http://search.twitter.com/search.json?q=" + tag
+                self.url = "http://search.twitter.com/search.json?q=" + tag + "&rpp=25"
             else:
                 self.url = "http://search.twitter.com/search.json?q=" + tag
 

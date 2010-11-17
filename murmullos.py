@@ -38,6 +38,11 @@ class Murmullos:
 
         self.identica = identica.Identica(service,tag)
 
+        # Code for the logo:
+        self.logo = clutter.Texture()
+        self.logo.set_from_file("img/logo.png")
+        self.stage.add(self.logo)
+
         # Code for the avatar:
         self.avatar = clutter.Texture()
 
@@ -59,6 +64,7 @@ class Murmullos:
         alpha = clutter.Alpha(self.timeline,clutter.LINEAR)
         self.behaviour = clutter.BehaviourOpacity(0xdd,0,alpha)
         self.behaviour.apply(self.group)
+        self.behaviour.apply(self.logo)
 
         # Create the bubble if we are not in full screen mode
         if not self.stage.get_fullscreen():
@@ -86,6 +92,12 @@ class Murmullos:
 
         self.label.set_size(width-50, height-50)
 
+        # Position for the logo
+        sx = (x/2)-(self.logo.get_width()/2)
+        sy= (y/2)-(self.logo.get_height()/2)
+
+        self.logo.set_position(sx,sy)
+
         # Position for the group: Bubble, Texture and Label
         sx = (x/2)-(self.bubble.get_width()/2)
         sy = (y/2)-(self.bubble.get_height()/2)
@@ -107,13 +119,17 @@ class Murmullos:
         self.label.set_text(message)
 
     def on_timeline_completed(timeline, frame_num, self):
+        self.stage.remove(self.logo)
         self.bubble.show()
-        item = self.identica.data['results'].pop()
-        urllib.urlretrieve(item['profile_image_url'],"avatar")
-        self.post("avatar",item['text'])
-        print("Quedan %s elementos",len(self.identica.data['results']),item['text'])
-        if (len(self.identica.data['results'])==0):
-            self.IdenticaUpdate()
+        try:
+            item = self.identica.data['results'].pop()
+            urllib.urlretrieve(item['profile_image_url'],"avatar")
+            self.post("avatar",item['text'])
+            print("Quedan %s elementos",len(self.identica.data['results']),item['text'])
+            if (len(self.identica.data['results'])==0):
+                self.IdenticaUpdate()
+        except AttributeError:
+            self.post("default-avatar.png","Nothing to tell ^_^")
 
     def new_bubble(self, width=40, height=20):
         # First, we create the basic elements as textures
