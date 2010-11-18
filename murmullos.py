@@ -222,7 +222,7 @@ class Murmullos:
 
     def run (self):
         self.stage.show_all()
-        #self.IdenticaUpdate()
+        self.IdenticaUpdate()
         self.timeline.start()
 
         clutter.main()
