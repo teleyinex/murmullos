@@ -123,13 +123,15 @@ class Murmullos:
         self.bubble.show()
         try:
             item = self.identica.data['results'].pop()
-            urllib.urlretrieve(item['profile_image_url'],"avatar")
-            self.post("avatar",item['text'])
+            urllib.urlretrieve(item['profile_image_url'],"/tmp/avatar")
+            self.post("/tmp/avatar",item['text'])
             print("Quedan %s elementos",len(self.identica.data['results']),item['text'])
             if (len(self.identica.data['results'])==0):
                 self.IdenticaUpdate()
+        except IndexError:
+            self.post("default-avatar.png","Nothing found about your topic. Try another search ^_^")
         except AttributeError:
-            self.post("default-avatar.png","Nothing to tell ^_^")
+            self.post("default-avatar.png","Enable your Internet connection if you want to display dents or tweets ;)")
 
     def new_bubble(self, width=40, height=20):
         # First, we create the basic elements as textures
@@ -220,7 +222,7 @@ class Murmullos:
 
     def run (self):
         self.stage.show_all()
-        self.IdenticaUpdate()
+        #self.IdenticaUpdate()
         self.timeline.start()
 
         clutter.main()
